@@ -1,6 +1,6 @@
 "use client";
 
-import PrivateBrowsing from "@/components/PrivateBrowsing"; // Fixed: default import
+import PrivateBrowsing from "@/components/PrivateBrowsing"; // Fixed: Named import
 
 const PrivateBrowsingPage = () => {
   return (
