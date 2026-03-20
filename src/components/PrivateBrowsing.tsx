@@ -1,16 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/router"; // Fixed: Use next/router instead of next/navigation
-import { toast } from "@/components/ui/use-toast"; // Fixed: Use toast function
+import { showSuccess } from "@/utils/toast";
 
 const PrivateBrowsing = () => {
-  const router = useRouter();
-
   const openPrivateTab = (url: string) => {
     const newTab = window.open(url, "_blank", "noopener,noreferrer");
     if (newTab) {
-      toast("Private browsing tab opened successfully"); // Fixed: Pass string instead of object
+      showSuccess("Private browsing tab opened successfully");
     }
   };
 
