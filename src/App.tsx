@@ -14,7 +14,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
-// Protected route wrapperconst RequireAuth = ({ children }: { children: React.ReactNode }) => {
+const RequireAuth = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
@@ -37,7 +37,6 @@ const App = () => (
                 </RequireAuth>
               } 
             />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
