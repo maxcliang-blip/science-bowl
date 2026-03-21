@@ -19,6 +19,23 @@ const RequireAuth = ({ children }: { children: React.ReactNode }) => {
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
+// Add security headers middleware
+const addSecurityHeaders = () => {
+  if (typeof window !== 'undefined') {
+    // Add CSP header (would be done by server in production)
+    document.addEventListener('DOMContentLoaded', () => {
+      // Prevent XSS by disabling eval and similar functions
+      if (window.eval) {
+        window.eval = (x: string) => {
+          return "eval disabled";
+        };
+      }
+    });
+  }
+};
+
+addSecurityHeaders();
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -29,8 +46,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
-            <Route 
-              path="/private" 
+            <Route               path="/private" 
               element={
                 <RequireAuth>
                   <PrivateBrowsingPage />
