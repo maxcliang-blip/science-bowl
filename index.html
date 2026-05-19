@@ -1,6 +1,56 @@
-<html>                                                                     
-     <head>                                                                     
-     <meta http-equiv="refresh" content="0;url=http://129.80.7.65:9090/web">    
-     </head>                                                                    
-     <body></body>                                                              
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Science Bowl Proxy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f0f1a; min-height: 100vh; }
+    .top-bar { position: fixed; top: 0; left: 0; right: 0; background: rgba(30,30,50,0.95); backdrop-filter: blur(10px); padding: 10px 16px; display: flex; gap: 8px; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); align-items: center; }
+    .top-bar input { flex: 1; padding: 10px 14px; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.1); color: #fff; font-size: 13px; outline: none; transition: border-color 0.3s; }
+    .top-bar input:focus { border-color: #4ecdc4; }
+    .top-bar input::placeholder { color: rgba(255,255,255,0.5); }
+    .top-bar .go-btn { padding: 10px 20px; border: none; border-radius: 8px; background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+    .content { padding-top: 60px; height: 100vh; }
+    .content iframe { width: 100%; height: calc(100vh - 60px); border: none; background: #fff; }
+    .landing { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: calc(100vh - 60px); padding: 40px 20px; }
+    .landing h1 { color: #fff; margin-bottom: 20px; }
+    .landing p { color: rgba(255,255,255,0.7); text-align: center; font-size: 16px; }
+    .loading { display: none; position: fixed; top: 70px; left: 0; right: 0; padding: 10px; background: #4ecdc4; color: #000; text-align: center; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <input type="url" id="url-input" placeholder="Enter URL to browse...">
+    <button id="go-btn" class="go-btn">Go</button>
+  </div>
+  <div id="loading" class="loading">Loading...</div>
+  <div id="content">
+    <div id="landing" class="landing">
+      <h1>Proxy</h1>
+      <p>Enter a URL above to browse through your proxy.<br>Your actual proxy URL stays hidden.</p>
+    </div>
+    <iframe id="proxy-frame" style="display:none"></iframe>
+  </div>
+  <script>
+    const proxyBase = 'http://129.80.7.65:9090';
+    const urlInput = document.getElementById('url-input');
+    const goBtn = document.getElementById('go-btn');
+    const landing = document.getElementById('landing');
+    const loading = document.getElementById('loading');
+    const proxyFrame = document.getElementById('proxy-frame');
+    function navigate(url) {
+      if (!url) return;
+      if (url.indexOf('://') === -1) url = 'https://' + url;
+      urlInput.value = url;
+      landing.style.display = 'none';
+      proxyFrame.style.display = 'block';
+      loading.style.display = 'block';
+      proxyFrame.src = proxyBase + '/browse?url=' + encodeURIComponent(url);
+      proxyFrame.onload = function() { loading.style.display = 'none'; };
+    }
+    goBtn.addEventListener('click', function() { navigate(urlInput.value); });
+    urlInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') navigate(urlInput.value); });
+  </script>
+</body>
 </html>
